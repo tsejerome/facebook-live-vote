@@ -1,0 +1,475 @@
+<html>
+<style>
+.content {
+    box-sizing: border-box;
+    background: white;
+    height:100%;
+    overflow: auto;
+    z-index: 1;
+    border-right: 1px solid #009999;
+    padding-right:505px;
+}
+
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
+.form {
+  right:5px;
+  width: 500px;
+  border-radius: 0px;
+  background-color: #f2f2f2;
+  /*padding-left: 10px;*/
+  z-index:2;
+  height: 100%;
+  position: fixed;
+  color: #009999;
+}
+/*.dailo {overflow: hidden;}*/
+#preview img {
+  max-width: 100%;max-height: 100%;
+}
+#data-vid video {
+  max-width: 100%;
+    height: auto;
+}
+.ok {
+  max-width: 100%;
+      height: auto;
+}
+
+span.tc.counter {
+  text-align: center;
+  font-size: 3.5rem;
+  font-weight: bold;
+}
+
+.wf {
+  width: 28%;
+}
+
+.wf img.illu {
+  width:80%;
+  display: block;
+  margin: 20px auto;
+  position: relative;
+}
+
+.emoji  {
+  width:34px;
+  display: inline-block;
+  margin-right:20px;
+  margin-top:15px;
+  position: fixed;
+}
+
+.wf {
+  width: 29.3%;
+  float:left;
+  border:solid 1px #eee;
+  background:#fff;
+  border-radius: 8px;
+  position: fixed;
+  text-align: center;
+}
+
+.likeclass {
+top:25%;
+position:absolute;
+}
+.loveclass {
+position:absolute;
+top:45%
+}
+.sadclass {
+  position:absolute;
+  top:65%
+}
+.hahaclass {
+  position: absolute;
+  top: 25%;
+  right:5%;
+}
+.angryclass{
+  position:absolute;
+  top:45%;
+  right:5%;
+}
+.shockclass{
+  position:absolute;
+  top:65%;
+  right:5%;
+}
+.choosebg {
+  position:absolute;
+  top:2%;
+}
+
+.anotherclassforform {
+  padding:10px
+}
+
+.button {
+   /* Green */
+
+    border: none;
+    color: white;
+    padding: 8px 21px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 0px 2px;
+    margin-top:200px;
+    -webkit-transition-duration: 0.4s;
+    transition-duration: 0.4s;
+    cursor: pointer;
+    background-color: white;
+    color: black;
+    border: 2px solid #009999;
+}
+
+.button:hover {
+    background-color: #009999;
+    color: white;
+}
+
+body{
+  margin: 0;
+  font-family: 'Open Sans', sans-serif;
+  font-color: white;
+  color: white;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.3)
+}
+
+</style>
+
+
+<body ng-app="myApp" ng-controller="myCtrl" id="body">
+<form ng-submit="submit()" class="form" name="form">
+	<div class="anotherclassforform"><div  class="likeclass" ng-show="iflike">
+    LIKE<br>
+    Icon<br>
+  <label>X-coordinate <input type="text" ng-model="likeX" name="likeX" id ="likeX" /></label><br />
+	<label>Y-coordinate: <input type="text" ng-model="likeY" name="likeY" id ="likeY"/></label><br />
+  Number<br>
+  <label>X-coordinate <input type="text" ng-model="likeNX" name="likeNX" id ="likeNX" /></label><br />
+	<label>Y-coordinate: <input type="text" ng-model="likeNY" name="likeNY" id ="likeNY"/></label><br />
+  </div>
+  <div  class="loveclass" ng-show="iflove">
+    LOVE<br>
+    Icon<br>
+  <label>X-coordinate <input type="text" ng-model="loveX" name="loveX" id ="loveX" /></label><br />
+	<label>Y-coordinate: <input type="text" ng-model="loveY" name="loveY" id ="loveY"/></label><br />
+  Number<br>
+  <label>X-coordinate <input type="text" ng-model="loveNX" name="loveNX" id ="loveNX" /></label><br />
+	<label>Y-coordinate: <input type="text" ng-model="loveNY" name="loveNY" id ="loveNY"/></label><br />
+  </div>
+  <div  class="sadclass" ng-show="ifsad">
+    SAD<br>
+    Icon<br>
+  <label>X-coordinate <input type="text" ng-model="sadX" name="sadX" id ="sadX" /></label><br />
+  <label>Y-coordinate: <input type="text" ng-model="sadY" name="sadY" id ="sadY"/></label><br />
+  Number<br>
+  <label>X-coordinate <input type="text" ng-model="sadNX" name="sadNX" id ="sadNX" /></label><br />
+  <label>Y-coordinate: <input type="text" ng-model="sadNY" name="sadNY" id ="sadNY"/></label><br />
+  </div>
+  <div  class="hahaclass" ng-show="ifhaha">
+    HAHA<br>
+    Icon<br>
+  <label>X-coordinate <input type="text" ng-model="hahaX" name="hahaX" id ="hahaX" /></label><br />
+  <label>Y-coordinate: <input type="text" ng-model="hahaY" name="hahaY" id ="hahaY"/></label><br />
+  Number<br>
+  <label>X-coordinate <input type="text" ng-model="hahaNX" name="hahaNX" id ="hahaNX" /></label><br />
+  <label>Y-coordinate: <input type="text" ng-model="hahaNY" name="hahaNY" id ="hahaNY"/></label><br />
+  </div>
+  <div  class="angryclass" ng-show="ifangry">
+    ANGRY<br>
+    Icon<br>
+  <label>X-coordinate <input type="text" ng-model="angryX" name="angryX" id ="angryX" /></label><br />
+  <label>Y-coordinate: <input type="text" ng-model="angryY" name="angryY" id ="angryY"/></label><br />
+    Number<br>
+  <label>X-coordinate <input type="text" ng-model="angryNX" name="angryNX" id ="angryNX" /></label><br />
+  <label>Y-coordinate: <input type="text" ng-model="angryNY" name="angryNY" id ="angryNY"/></label><br />
+  </div>
+  <div  class="shockclass" ng-show="ifshock">
+    SHOCK<br>
+    Icon<br>
+  <label>X-coordinate <input type="text" ng-model="shockX" name="shockX" id ="shockX" /></label><br />
+  <label>Y-coordinate: <input type="text" ng-model="shockY" name="shockY" id ="shockY"/></label><br />
+    Number<br>
+  <label>X-coordinate <input type="text" ng-model="shockNX" name="shockNX" id ="shockNX" /></label><br />
+  <label>Y-coordinate: <input type="text" ng-model="shockNY" name="shockNY" id ="shockNY"/></label><br />
+  </div>
+
+<div class="choosebg">
+  Font Size and Color:
+  <select onchange="fontsize(this);">
+  <option>100%</option>
+  <option>200%</option>
+  <option>300%</option>
+  <option>400%</option>
+  <option>500%</option>
+  <option>600%</option>
+  <option>700%</option>
+  <option>800%</option>
+  <option>900%</option>
+  <option>1000%</option>
+  <option>1100%</option>
+</select>
+<select onchange="fontcolor(this);">
+  <option>white</option>
+  <option>green</option>
+  <option>orange</option>
+  <option>purple</option>
+  <option>black</option>
+  <option>yellow</option>
+  <option>blue</option>
+  <option>red</option>
+</select>
+<br >Choose one of the following:
+    <br><div >Background-photo:
+      <input type="file" name="the-photo-file-field" id="the-photo-file-field">
+    </div></br>
+
+    <div >Background-video:
+      <input type="file" name="the-video-file-field" id="the-video-file-field">
+    </div>
+
+    <br><br><div >Post ID:
+  		<input placeholder="post ID" type="text" ng-model="sPostID" name="sPostID" id="sPostID" />
+    </div>
+</div>
+<div>
+  <input style="position:absolute; top:54%;" type="submit" onclick="startcount()" value="Submit" class="button" >
+</div>
+  <div style="position:absolute; top:50%; left:8%; width:40% font-size: 16px; font-weight: bold; color: red;" ng-show="submitted"> Submitted
+  </div>
+</div>
+  </form>
+
+<div class="content">
+  <div >
+  	  <div ng-show="iflike != null" class="likes">
+        <img class="emoji" src="emojis/like.png" ng-style="{left: likeX + 'px', top:likeY + 'px', position: 'fixed'}">
+          <div id="myPP1"><span ng-style="{left: likeNX + 'px', top:likeNY + 'px', position: 'fixed'}" class="counter" id="myP1">
+            <div ng-hide="numberhide">0</div>
+          </span></div>
+      </div>
+      <div ng-show="iflove != null" class="happy">
+        <img class="emoji" src="emojis/love.png" ng-style="{left: loveX + 'px', top:loveY + 'px', position: 'fixed'}">
+          <div id="myPP2"><span ng-style="{left: loveNX + 'px', top:loveNY + 'px', position: 'fixed'}" class="counter" id="myP2">
+            <div ng-hide="numberhide">0</div>
+          </span></div>
+      </div>
+      <div ng-show="ifsad != null" class="sad">
+        <img class="emoji" src="emojis/sad.png" ng-style="{left: sadX + 'px', top:sadY + 'px', position: 'fixed'}">
+        <div id="myPP3"><span ng-style="{left: sadNX + 'px', top:sadNY + 'px', position: 'fixed'}" class="counter" id="myP3">
+            <div ng-hide="numberhide">0</div>
+          </span></div>
+      </div>
+      <div ng-show="ifhaha != null" class="fml">
+        <img class="emoji" src="emojis/haha.png" ng-style="{left: hahaX + 'px', top:hahaY + 'px', position: 'fixed'}">
+          <div id="myPP4"><span ng-style="{left: hahaNX + 'px', top:hahaNY + 'px', position: 'fixed'}" class="counter" id="myP4">
+            <div ng-hide="numberhide">0</div>
+          </span></div>
+      </div>
+      <div ng-show="ifangry != null" class="angry">
+        <img class="emoji" src="emojis/angry.png" ng-style="{left: angryX + 'px', top:angryY + 'px', position: 'fixed'}">
+          <div id="myPP5"><span ng-style="{left: angryNX + 'px', top:angryNY + 'px', position: 'fixed'}" class="counter" id="myP5">
+            <div ng-hide="numberhide">0</div>
+          </span></div>
+      </div>
+      <div ng-show="ifshock != null" class="shock">
+        <img class="emoji" src="emojis/shock.png" ng-style="{left: shockX + 'px', top:shockY + 'px', position: 'fixed'}">
+          <div id="myPP6"><span ng-style="{left: shockNX + 'px', top:shockNY + 'px', position: 'fixed'}" class="counter" id="myP6">
+            <div ng-hide="numberhide">0</div>
+          </span></div>
+      </div>
+  </div>
+
+  <div class="dailo">
+    <div id="preview" class="ok">
+      <!--image will be inserted here-->
+    </div>
+    <div id="data-vid" class="ok">
+      <!--video will be inserted here.-->
+    </div>
+  </div>
+
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+<script>
+
+var query = {};
+    var a = window.location.search.substr(1).split('&');
+        for (var i = 0; i < a.length; i++) {
+            var b = a[i].split('=');
+            query[decodeURIComponent(b[0])] = decodeURIComponent(b[1] || '');
+        }
+	console.log(query);// Sets the new location of the current window.
+
+  function fontsize(selectTag) {
+      var listValue = selectTag.options[selectTag.selectedIndex].text;
+      document.getElementById("myP1").style.fontSize = listValue;
+      document.getElementById("myP2").style.fontSize = listValue;
+      document.getElementById("myP3").style.fontSize = listValue;
+      document.getElementById("myP4").style.fontSize = listValue;
+      document.getElementById("myP5").style.fontSize = listValue;
+      document.getElementById("myP6").style.fontSize = listValue;
+  }
+  function fontcolor(selectTag) {
+      var listValue = selectTag.options[selectTag.selectedIndex].text;
+      document.getElementById("myPP1").style.color = listValue;
+      document.getElementById("myPP2").style.color = listValue;
+      document.getElementById("myPP3").style.color = listValue;
+      document.getElementById("myPP4").style.color = listValue;
+      document.getElementById("myPP5").style.color = listValue;
+      document.getElementById("myPP6").style.color = listValue;
+  }
+    "use strict";
+    var postID="";
+    var myApp = angular.module('myApp', []);
+    var submitted=false;
+    var pageID = query.pageID;
+    var access_token = query.AppAT;
+      console.log("AppAT is" + access_token); console.log("PageID is" + pageID);
+    var refreshTime = 1; // Refresh time in seconds
+    var defaultCount = 0; // Default count to start with
+
+    var reactions = ['LIKE', 'LOVE', 'WOW', 'HAHA', 'SAD', 'ANGRY'].map(function (e) {
+        var code = 'reactions_' + e.toLowerCase();
+        return 'reactions.type(' + e + ').limit(0).summary(total_count).as(' + code + ')'
+    }).join(',');
+
+      var	v1 = $('.likes .counter'),
+          v2 = $('.happy .counter'),
+          v3 = $('.sad .counter'),
+          v4 = $('.fml .counter'),
+          v5 = $('.angry .counter'),
+          v6 = $('.shock .counter');
+
+        function refreshCounts() {
+          var url = 'https://graph.facebook.com/v2.8/?ids=' + postID + '&fields=' + reactions + '&access_token=' + access_token;console.log("refreshcounts postID" + postID);
+        $.getJSON(url, function(res){
+              v1.text(defaultCount + res[postID].reactions_like.summary.total_count);
+              v2.text(defaultCount + res[postID].reactions_love.summary.total_count);
+              v3.text(defaultCount + res[postID].reactions_sad.summary.total_count);
+              v4.text(defaultCount + res[postID].reactions_haha.summary.total_count);
+              v5.text(defaultCount + res[postID].reactions_angry.summary.total_count);
+              v6.text(defaultCount + res[postID].reactions_wow.summary.total_count);
+        });
+      console.log("updated");
+      }
+
+
+    var startcount = function(){console.log("startcount postID is " +postID);
+    var scope = angular.element($("#body")).scope();
+    scope.$apply(function(){scope.submit();console.log(scope.numberhide);
+         postID= scope.postID;
+         scope.numberhide=true;console.log(scope.numberhide);
+    });
+    console.log("startcount postID are " +postID);
+          console.log("start");  setInterval(refreshCounts, refreshTime * 1000);
+          console.log("end");
+      };
+
+
+    myApp.controller('myCtrl', function($scope, $http) {
+  		$scope.iflike= query.iflike;
+  		$scope.iflove= query.iflove;
+  		$scope.ifsad= query.ifsad;
+  		$scope.ifhaha= query.ifhaha;
+  		$scope.ifangry= query.ifangry;
+  		$scope.ifshock= query.ifshock;
+      $scope.AppAT= query.AppAT;
+      $scope.pageID= query.pageID;
+      $scope.sPostID= "";
+      $scope.submit = function () {
+        submitted=true;
+        $scope.postID= $scope.pageID + "_" + $scope.sPostID;
+              postID = $scope.postID;
+        };
+      });
+        // $.when(middle()).done(startcount());
+
+if (window.File && window.FileReader && window.FileList && window.Blob) {
+
+   //this is not completely neccesary, just a nice function I found to make the file size format friendlier
+	//http://stackoverflow.com/questions/10420352/converting-file-size-in-bytes-to-human-readable
+	// function humanFileSize(bytes, si) {
+	//     var thresh = si ? 1000 : 1024;
+	//     if(bytes < thresh) return bytes + ' B';
+	//     var units = si ? ['kB','MB','GB','TB','PB','EB','ZB','YB'] : ['KiB','MiB','GiB','TiB','PiB','EiB','ZiB','YiB'];
+	//     var u = -1;
+	//     do {
+	//         bytes /= thresh;
+	//         ++u;
+	//     } while(bytes >= thresh);
+	//     return bytes.toFixed(1)+' '+units[u];
+	// }
+
+
+  //this function is called when the input loads an image
+	function renderImage(file){
+		var reader = new FileReader();
+		reader.onload = function(event){
+			the_url = event.target.result
+      //of course using a template library like handlebars.js is a better solution than just inserting a string
+			$('#preview').html("<img src='"+the_url+"' />")
+			$('#name').html(file.name)
+			$('#type').html(file.type)
+		}
+
+    //when the file is read it triggers the onload event above.
+		reader.readAsDataURL(file);
+	}
+
+
+  //this function is called when the input loads a video
+	function renderVideo(file){
+		var reader = new FileReader();
+		reader.onload = function(event){
+			the_url = event.target.result
+      //of course using a template library like handlebars.js is a better solution than just inserting a string
+      $('#data-vid').html("<video width='100%' controls autoplay loop><source id='vid-source' src='"+the_url+"' type='video/mp4'></video>")
+       $('#name-vid').html(file.name)
+			$('#type-vid').html(file.type)
+
+		}
+
+    //when the file is read it triggers the onload event above.
+		reader.readAsDataURL(file);
+	}
+
+
+  //watch for change on the
+	$( "#the-photo-file-field" ).change(function() {
+		console.log("photo file has been chosen")
+		//grab the first image in the fileList
+		//in this example we are only loading one file.
+		console.log(this.files[0].size);
+		renderImage(this.files[0]);
+  });
+
+	$( "#the-video-file-field" ).change(function() {
+		console.log("video file has been chosen")
+		//grab the first image in the fileList
+		//in this example we are only loading one file.
+		console.log(this.files[0].size)
+		renderVideo(this.files[0])
+	});
+
+} else {
+
+  alert('The File APIs are not fully supported in this browser.');
+
+}
+
+	</script>
+</body>
+</html>

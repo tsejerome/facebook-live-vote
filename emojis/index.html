@@ -1,0 +1,251 @@
+<!-- Original source code: https://gist.github.com/anonymous/7073ea6c601f28aa65e5a077ef875526 -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<style>
+
+	.content {
+	    box-sizing: border-box;
+	    background: white;
+	    margin-left: 250px;
+	    width: auto;
+	    height:1080px;
+	    position: relative;
+	    overflow: auto;
+	    z-index: 1;
+	    background-size: cover;
+	}
+
+	*, *:before, *:after {
+	  box-sizing: inherit;
+	}
+
+.leftshit {
+	position:fixed;
+	width:250px;
+	height:1080px;
+	background: white;
+}
+	.ok {
+	    /*max-width: 95%;*/
+	    left:5%;
+	    height:1080px;
+	    background: url("background.png") no-repeat center fixed; /* YOUR BACKGROUND URL HERE */
+	    -webkit-background-size: contain;
+	    background-size: contain;
+	    position: absuolute;
+	    /*left:50%;*/
+	}
+
+	body{
+	  margin: 0;
+	  font-family: 'Open Sans', sans-serif;
+	  color: white;
+	  width: 100%;
+	  height: 100%;
+	  background: rgba(0,0,0,0.3)
+	}
+
+        .tc {
+						margin-left: 50px;
+						margin-top: -42px;
+            font-size: 3.5rem;
+            font-weight: bold;
+            color: white;
+
+        }
+        .wf {
+            width: 28%;
+        }
+        .wf img.illu {
+            width:80%;
+            display: block;
+            margin: 20px auto;
+            position: relative;
+        }
+				.emoji  {
+				  width:34px;
+				  display: inline-block;
+				  margin-right:20px;
+				  margin-top:15px;
+				}
+        .wf {
+            width: 29.3%;
+            float:left;
+            border:solid 1px #eee;
+            background:#fff;
+            border-radius: 8px;
+            position: fixed;
+            text-align: center;
+        }
+		.all {
+		position: absolute;
+		}
+		.counter {
+			margin-top: -20px;
+			padding-left: 5px;
+		}
+	</style>
+</head>
+
+<body div ng-app="myApp" ng-controller="myCtrl">
+<div class="leftshit"></div>
+    <!-- REACTIONS -->
+		<div class="content">
+		  <div class="ok">
+				<div ng-show="iflike == 'on'" class="all likes" ng-style="{left: likeX + 'px', top:likeY + 'px'}"><img class="emoji" src="emojis/like.png"><div class="tc"><span class="counter"></span></div></div>
+
+				<div ng-show="iflove == 'on'" class="all happy" ng-style="{left: loveX + 'px', top:loveY + 'px'}"><img class="emoji" src="emojis/love.png"><div class="tc"><span class="counter"></span></div></div>
+
+				<div ng-show="ifsad == 'on'" class="all sad" ng-style="{left: sadX + 'px', top:sadY + 'px'}"><img class="emoji" src="emojis/sad.png"><div class="tc"><span class="counter"></span></div></div>
+
+				<div ng-show="ifhaha == 'on'" class="all fml" ng-style="{left: hahaX + 'px', top:hahaY + 'px'}"><img class="emoji" src="emojis/haha.png"><div class="tc"><span class="counter"></span></div></div>
+
+				<div ng-show="ifangry == 'on'" class="all angry" ng-style="{left: angryX + 'px', top:angryY + 'px'}"><img class="emoji" src="emojis/angry.png"><div class="tc"><span class="counter"></span></div></div>
+
+				<div ng-show="ifshock == 'on'" class="all shock" ng-style="{left: shockX + 'px', top:shockY + 'px'}"><img class="emoji" src="emojis/shock.png"><div class="tc"><span class="counter"></span></div></div>
+			</div>
+		</div>
+
+  <script src="jquery.min.js"></script>
+  <script src="lodash.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+	<script>
+	var query = {};
+        var a = window.location.search.substr(1).split('&');
+        for (var i = 0; i < a.length; i++) {
+            var b = a[i].split('=');
+            query[decodeURIComponent(b[0])] = decodeURIComponent(b[1] || '');
+        }
+	console.log(query);
+
+	var app = angular.module('myApp', []);
+	app.controller('myCtrl', function($scope, $http) {
+
+
+	$scope.iflike= query.iflike;
+	$scope.iflove= query.iflove;
+	$scope.ifsad= query.ifsad;
+	$scope.ifhaha= query.ifhaha;
+	$scope.ifangry= query.ifangry;
+	$scope.ifshock= query.ifshock;
+
+	$scope.likeX=query.likeX;
+	$scope.likeY=query.likeY;
+	$scope.loveX=query.loveX;
+	$scope.loveY=query.loveY;
+	$scope.hahaX=query.hahaX;
+	$scope.hahaY=query.hahaY;
+	$scope.sadX=query.sadX;
+	$scope.sadY=query.sadY;
+	$scope.angryX=query.angryX;
+	$scope.angryY=query.angryY;
+	$scope.shockX=query.shockX;
+	$scope.shockY=query.shockY;
+	console.log($scope.shockX);
+		});
+    "use strict";
+
+	var access_token = query.AppAT;
+    var postID = query.pageID + "_" + query.sPostID; // PASTE HERE YOUR POST ID
+    console.log(postID);
+	var refreshTime = 1; // Refresh time in seconds
+    var defaultCount = 0; // Default count to start with
+
+    var reactions = ['LIKE', 'LOVE', 'WOW', 'HAHA', 'SAD', 'ANGRY'].map(function (e) {
+        var code = 'reactions_' + e.toLowerCase();
+        return 'reactions.type(' + e + ').limit(0).summary(total_count).as(' + code + ')'
+    }).join(',');
+
+    var	v1 = $('.likes .counter'),
+    	v2 = $('.happy .counter'),
+        v3 = $('.sad .counter'),
+        v4 = $('.fml .counter'),
+        v5 = $('.angry .counter'),
+        v6 = $('.shock .counter');
+
+    function refreshCounts() {
+        var url = 'https://graph.facebook.com/v2.8/?ids=' + postID + '&fields=' + reactions + '&access_token=' + access_token;
+    	$.getJSON(url, function(res){
+    	    	v1.text(defaultCount + res[postID].reactions_like.summary.total_count);
+    	    	v2.text(defaultCount + res[postID].reactions_love.summary.total_count);
+            v3.text(defaultCount + res[postID].reactions_sad.summary.total_count);
+            v4.text(defaultCount + res[postID].reactions_haha.summary.total_count);
+            v5.text(defaultCount + res[postID].reactions_angry.summary.total_count);
+            v6.text(defaultCount + res[postID].reactions_wow.summary.total_count);
+    	});
+		console.log("updated");
+    }
+
+    $(document).ready(function(){
+        setInterval(refreshCounts, refreshTime * 1000);
+        refreshCounts();
+    });
+
+		if (window.File && window.FileReader && window.FileList && window.Blob) {
+
+		   //this is not completely neccesary, just a nice function I found to make the file size format friendlier
+			//http://stackoverflow.com/questions/10420352/converting-file-size-in-bytes-to-human-readable
+
+		  //this function is called when the input loads an image
+			function renderImage(file){
+				var reader = new FileReader();
+				reader.onload = function(event){
+					the_url = event.target.result
+		      //of course using a template library like handlebars.js is a better solution than just inserting a string
+					$('#preview').html("<img src='"+the_url+"' />")
+					$('#name').html(file.name)
+					$('#size').html(humanFileSize(file.size, "MB"))
+					$('#type').html(file.type)
+				};
+
+		    //when the file is read it triggers the onload event above.
+				reader.readAsDataURL(file);
+			}
+
+
+		  //this function is called when the input loads a video
+			function renderVideo(file){
+				var reader = new FileReader();
+				reader.onload = function(event){
+					the_url = event.target.result
+		      //of course using a template library like handlebars.js is a better solution than just inserting a string
+		      $('#data-vid').html("<video width='100%' controls autoplay loop><source id='vid-source' src='"+the_url+"' type='video/mp4'></video>")
+		       $('#name-vid').html(file.name)
+					$('#size-vid').html(humanFileSize(file.size, "MB"))
+					$('#type-vid').html(file.type)
+
+				}
+
+		    //when the file is read it triggers the onload event above.
+				reader.readAsDataURL(file);
+			}
+
+
+		var image;var video;
+		  //watch for change on the
+			$( "#the-photo-file-field" ).change(function() {
+				console.log("photo file has been chosen")
+				//grab the first image in the fileList
+				//in this example we are only loading one file.
+				renderImage(this.files[0]);
+		    // console.log(this.files[0]);
+			});
+
+			$( "#the-video-file-field" ).change(function() {
+				console.log("video file has been chosen")
+				//grab the first image in the fileList
+				//in this example we are only loading one file.
+				console.log(this.files[0].size)
+				renderVideo(this.files[0])
+			});
+		} else {
+
+		  alert('The File APIs are not fully supported in this browser.');
+
+		}
+
+    </script>
+</body>
+</html>
